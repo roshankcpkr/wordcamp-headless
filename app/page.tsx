@@ -5,13 +5,8 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Hero Section */}
-      <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-white dark:bg-black">
-        {/* Background brand image (primary visual) */}
-        <div className="absolute inset-0 opacity-20 md:opacity-30">
-          <Image src="/logo.png" alt="Bingo Academy" fill priority className="object-contain object-center" />
-        </div>
-        {/* Contrast overlay for readability */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/60 via-white/40 to-white/20 dark:from-black/60 dark:via-black/40 dark:to-black/20" />
+      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-white dark:bg-black">
+        {/* Simple hero for base step */}
         
         <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <div className="mb-8 text-8xl">🏍️</div>
@@ -42,12 +37,7 @@ export default function Home() {
                 />
               </svg>
             </Link>
-            <Link
-              href="/blog"
-              className="rounded-full border-2 border-black px-8 py-4 text-lg font-semibold text-black transition-all hover:bg-black/5 hover:shadow-2xl dark:border-white dark:text-white dark:hover:bg-white/10"
-            >
-              Read Blog
-            </Link>
+            <Link href="/" className="rounded-full border-2 border-black px-8 py-4 text-lg font-semibold text-black transition-all hover:bg-black/5 hover:shadow-2xl dark:border-white dark:text-white dark:hover:bg-white/10">Learn More</Link>
           </div>
         </div>
 

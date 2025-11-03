@@ -1,13 +1,14 @@
-# Step 2 – Bikes (bikes branch)
+# Step 1 – Base (base branch)
 
-This branch introduces the bikes feature powered by WPGraphQL. No blog, no SEO.
+Minimal Next.js + Tailwind setup with a simple hero and navigation. No GraphQL, no bikes/blog, no footer.
 
 ## What’s in this step
 
-- GraphQL client (graphql-request)
-- Bikes listing `/bikes` and detail `/bikes/[slug]`
-- Bike cards and detail layout
-- No blog or SEO
+- Next.js App Router skeleton
+- Tailwind v4 wired
+- Simple hero + CTAs
+- Palette: black/white/orange
+- No GraphQL, no bikes/blog
 
 ## Tech stack
 
@@ -25,7 +26,7 @@ This branch introduces the bikes feature powered by WPGraphQL. No blog, no SEO.
   - Custom Post Type: `bikes`
   - (Optional) Custom Taxonomy for bikes (e.g., `BRAND`), used as terms
   - Custom fields for bikes (ACF or code)
-  - (Optional) SEO plugin — not used in this branch
+  - No WordPress required in this step
 
 ### Bike custom fields expected
 
@@ -97,7 +98,10 @@ app/
   bikes/
     page.tsx           # Bikes listing (cards)
     [slug]/page.tsx    # Bike detail
-  blog/                # (not present in this branch)
+  blog/                # (not present)
+  bikes/               # (not present)
+lib/                   # (not present)
+types/                 # (not present)
   layout.tsx           # Root layout (Navigation + Footer)
   page.tsx             # Homepage (hero + features)
 components/
