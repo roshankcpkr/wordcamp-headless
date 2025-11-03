@@ -1,14 +1,14 @@
-# Step 4 – Theme & UX (theme branch)
+# Step 3 – Blog (blog branch)
 
-This branch removes SEO and focuses on the visual polish and UX over the bikes and blog features.
+This branch adds the blog (listing, post details, categories and tags) on top of the bikes feature. No SEO.
 
 ## What’s in this step
 
-- Bikes + Blog (no SEO fields in queries)
-- Mobile navigation with hamburger
-- Footer with logo, about, socials
-- Card polish and black/white/orange theme
-- WordPress HTML rendering helpers in `.wp-content`
+- Blog listing `/blog`
+- Blog detail `/blog/[slug]`
+- Category and tag pages
+- Bikes feature from previous step
+- No SEO in queries
 
 ## Tech stack
 
