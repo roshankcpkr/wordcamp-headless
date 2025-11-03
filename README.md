@@ -1,14 +1,13 @@
-# Step 3 – Blog (blog branch)
+# Step 2 – Bikes (bikes branch)
 
-This branch adds the blog (listing, post details, categories and tags) on top of the bikes feature. No SEO.
+This branch introduces the bikes feature powered by WPGraphQL. No blog, no SEO.
 
 ## What’s in this step
 
-- Blog listing `/blog`
-- Blog detail `/blog/[slug]`
-- Category and tag pages
-- Bikes feature from previous step
-- No SEO in queries
+- GraphQL client (graphql-request)
+- Bikes listing `/bikes` and detail `/bikes/[slug]`
+- Bike cards and detail layout
+- No blog or SEO
 
 ## Tech stack
 
@@ -98,11 +97,7 @@ app/
   bikes/
     page.tsx           # Bikes listing (cards)
     [slug]/page.tsx    # Bike detail
-  blog/
-    page.tsx           # Blog listing with categories/tags
-    [slug]/page.tsx    # Blog detail
-    category/[slug]/   # Category pages
-    tag/[slug]/        # Tag pages
+  blog/                # (not present in this branch)
   layout.tsx           # Root layout (Navigation + Footer)
   page.tsx             # Homepage (hero + features)
 components/
