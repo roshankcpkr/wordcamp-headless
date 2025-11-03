@@ -1,161 +1,155 @@
-# WordCamp Headless - Bike Info Site
+# WordCamp Headless – Bike Info Site
 
-A beautiful Next.js application powered by Headless WordPress and GraphQL, showcasing bikes with detailed specifications and a blog section.
+A Next.js App Router project using Headless WordPress (WPGraphQL) to power a Bike catalogue and a Blog. The UI follows a black/white base with orange accents and includes SEO, responsive cards, and WordPress classic editor HTML rendering.
 
-## Features
+## Tech stack
 
-- 🏍️ **Bike Collection**: Browse bikes with custom fields (name, model, price, engine, mileage, image)
-- 📝 **Blog Section**: Read posts filtered by categories and tags
-- 🎨 **Modern UI**: Beautiful, responsive design with dark mode support
-- ⚡ **Headless WordPress**: Powered by GraphQL for fast, flexible data fetching
-- 🔍 **SEO Optimized**: Server-side rendering with Next.js App Router
+- Next.js 16 (App Router) + React 19
+- TypeScript (strict)
+- Tailwind CSS v4
+- WPGraphQL (WordPress)
+- graphql-request
 
-## Prerequisites
+## Requirements
 
-- Node.js 18+ and npm
-- A WordPress site with:
-  - [WPGraphQL](https://www.wpgraphql.com/) plugin installed
-  - Custom post type "bikes" registered
-  - Custom taxonomy "bikes" registered
-  - Advanced Custom Fields (ACF) or similar for custom fields:
-    - `model` (text)
-    - `price` (text/number)
-    - `engine` (text)
-    - `mileage` (text)
-    - `image` (image field)
+- Node.js 18+ (Node 22 supported) and npm
+- WordPress instance with:
+  - WPGraphQL plugin
+  - Custom Post Type: `bikes`
+  - (Optional) Custom Taxonomy for bikes (e.g., `BRAND`), used as terms
+  - Custom fields for bikes (ACF or code)
+  - Optional SEO plugin exposing `seo` via WPGraphQL (Rankmath or similar)
 
-## Installation
+### Bike custom fields expected
 
-1. Clone or navigate to the project directory:
-```bash
-cd wordcamp-headless
-```
+Two common patterns are supported. Pick one that matches your WP:
 
-2. Install dependencies:
+1) ACF group `bikes` with fields:
+- `name` (string)
+- `model` (string)
+- `price` (number)
+- `engine` (string)
+- `mileage` (number/string)
+- `image` → `node.sourceUrl` (media)
+
+2) Featured image + terms only (image via `featuredImage.node.sourceUrl`).
+
+Tune `lib/queries.ts` if your schema differs.
+
+## Quick start
+
+1) Install dependencies
 ```bash
 npm install
 ```
 
-3. Create a `.env.local` file in the root directory:
-```bash
-cp .env.example .env.local
-```
-
-4. Update `.env.local` with your WordPress GraphQL endpoint:
+2) Configure environment
+Create `.env.local` in the project root:
 ```env
-NEXT_PUBLIC_WP_GRAPHQL_URL=https://your-wordpress-site.com/graphql
+NEXT_PUBLIC_WP_GRAPHQL_URL=http://localhost:8888/wordpress/graphql
 ```
+Use a working endpoint (common variants: `/graphql`, `/wp-json/graphql`).
 
-## WordPress Setup
+3) Configure Next Image for WordPress media (already included)
+- `next.config.ts` allows `localhost:8888` and sets remotePatterns. For other hosts, add your domain.
 
-### 1. Install Required Plugins
-
-Install the following WordPress plugins:
-- [WPGraphQL](https://www.wpgraphql.com/) - Main GraphQL plugin
-- [WPGraphQL for Advanced Custom Fields](https://www.wpgraphql.com/acf/) - If using ACF
-- Or use a headless WordPress solution like [Faust.js](https://faustjs.org/) or [Atlas](https://atlas.wpengine.com/)
-
-### 2. Register Custom Post Type and Fields
-
-You'll need to register:
-- Custom post type: `bikes`
-- Custom taxonomy: `bikes` (or adjust the query names)
-- Custom fields for bikes:
-  - `bike_model` or `model`
-  - `bike_price` or `price`
-  - `bike_engine` or `engine`
-  - `bike_mileage` or `mileage`
-  - `bike_image` or `image`
-
-### 3. GraphQL Query Structure
-
-The queries in `lib/queries.ts` assume the following GraphQL schema structure:
-- `bikes` - Query to get all bike posts
-- `bikeBy` - Query to get a single bike by slug
-- `posts` - Query to get blog posts
-- `postBy` - Query to get a single post by slug
-- Custom fields grouped under `bikeFields`
-
-**Note**: You may need to adjust the GraphQL queries in `lib/queries.ts` based on your WordPress GraphQL schema. Use GraphQL introspection tools or a GraphQL playground to verify your schema.
-
-## Development
-
-Run the development server:
-
+4) Run
 ```bash
 npm run dev
+# open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the application.
-
-## Building for Production
-
+5) Build/Start (production)
 ```bash
 npm run build
 npm start
 ```
 
-## Project Structure
+## Major features
+
+- Bikes listing (`/bikes`) and detail pages (`/bikes/[slug]`)
+- Blog listing (`/blog`) with categories/tags sidebars
+- Blog detail pages (`/blog/[slug]`) with WordPress HTML content
+- Classic editor HTML rendered via `dangerouslySetInnerHTML` with safe, responsive defaults (`.wp-content` helpers)
+- Image handling for local WordPress via Next Image (with unoptimized during local dev)
+- Mobile-friendly navigation with hamburger menu
+- Footer with logo, about, and social links
+- Theme: Black/White + Orange accents
+- SEO from WordPress: `seo { title, description, canonicalUrl, openGraph { ... } }` used in `generateMetadata`
+
+## Environment variables
+
+| Name | Required | Example | Description |
+|---|---|---|---|
+| `NEXT_PUBLIC_WP_GRAPHQL_URL` | Yes | `http://localhost:8888/wordpress/graphql` | WPGraphQL endpoint used by the app |
+
+## Project structure
 
 ```
-wordcamp-headless/
-├── app/
-│   ├── bikes/          # Bike pages
-│   │   ├── page.tsx    # Bike listing
-│   │   └── [slug]/     # Bike detail pages
-│   ├── blog/           # Blog pages
-│   │   ├── page.tsx    # Blog listing
-│   │   ├── [slug]/     # Blog post detail
-│   │   ├── category/   # Category filter
-│   │   └── tag/        # Tag filter
-│   ├── layout.tsx      # Root layout with navigation
-│   └── page.tsx        # Home page
-├── components/         # React components
-│   ├── BikeCard.tsx
-│   ├── BikeGrid.tsx
-│   ├── PostCard.tsx
-│   ├── PostGrid.tsx
-│   └── Navigation.tsx
-├── lib/
-│   ├── graphql.ts      # GraphQL client setup
-│   └── queries.ts      # GraphQL queries
-└── types/
-    └── index.ts        # TypeScript types
+app/
+  bikes/
+    page.tsx           # Bikes listing (cards)
+    [slug]/page.tsx    # Bike detail, SEO metadata
+  blog/
+    page.tsx           # Blog listing with categories/tags
+    [slug]/page.tsx    # Blog detail, SEO metadata
+    category/[slug]/   # Category pages
+    tag/[slug]/        # Tag pages
+  layout.tsx           # Root layout (Navigation + Footer)
+  page.tsx             # Homepage (hero + features)
+components/
+  Navigation.tsx       # Desktop + mobile hamburger
+  Footer.tsx           # Logo, about, socials
+  BikeCard.tsx         # Bike card UI
+  BikeGrid.tsx         # Bikes grid
+  PostCard.tsx         # Blog card UI
+  PostGrid.tsx         # Posts grid
+lib/
+  graphql.ts           # graphql-request client
+  queries.ts           # GraphQL documents
+types/
+  index.ts             # Shared TypeScript types (Bike/Post/SEO)
 ```
 
-## Customization
+## WordPress configuration notes
 
-### Adjusting GraphQL Queries
+1) Ensure the CPT `bikes` and GraphQL single name `bike` are exposed to GraphQL.
+2) If using a taxonomy filter (e.g., `BRAND`), adjust the `terms` queries to your taxonomy name.
+3) If ACF fields are different, update the `bikes` field group in `lib/queries.ts` and `types/index.ts`.
+4) For SEO, confirm your SEO plugin exposes `seo` in WPGraphQL. If not available, the app falls back to reasonable defaults.
 
-If your WordPress GraphQL schema differs, update the queries in `lib/queries.ts`. Common adjustments:
+## Content rendering (classic editor)
 
-1. **Custom Field Names**: Update field names in the `bikeFields` section
-2. **Post Type Names**: Change `bikes` to your custom post type name
-3. **Taxonomy Names**: Adjust `bikes` taxonomy references
-4. **Field Groups**: Modify how custom fields are grouped/accessed
+We render WordPress HTML with `dangerouslySetInnerHTML` inside `.wp-content` wrappers. Global CSS (`app/globals.css`) includes:
+- Responsive images/videos/iframes
+- Alignment helpers (`.aligncenter`, `.alignleft`, `.alignright`)
+- Typography defaults (headings, lists, links)
 
-### Styling
+## Image troubleshooting
 
-The project uses Tailwind CSS v4. Customize styles in:
-- `app/globals.css` - Global styles
-- Component files - Inline Tailwind classes
-- Theme configuration in `globals.css` using CSS variables
+- Local WordPress media: ensure `next.config.ts` includes your host/port. For alternate dev hosts, add them and restart `npm run dev`.
+- During local dev, some images are rendered with `unoptimized` to bypass optimizer restrictions.
 
-## Troubleshooting
+## GraphQL troubleshooting
 
-### No Data Showing
+404 HTML from the endpoint means the URL is wrong. Try:
+- `http://localhost:8888/wordpress/graphql`
+- `http://localhost:8888/graphql`
+- `http://localhost:8888/wp-json/graphql`
 
-1. **Check GraphQL Endpoint**: Verify `NEXT_PUBLIC_WP_GRAPHQL_URL` is correct
-2. **Check GraphQL Schema**: Use a GraphQL playground to test queries
-3. **Check Field Names**: Ensure field names match your WordPress setup
-4. **Check Permissions**: Ensure WPGraphQL has access to your custom post types
+If a query field errors, copy the working query from your GraphQL IDE and update `lib/queries.ts` accordingly.
 
-### GraphQL Errors
+## Accessibility & performance
 
-1. Enable GraphQL debugging in WordPress
-2. Check browser console and terminal for error messages
-3. Verify your GraphQL queries match your schema using introspection
+- Semantic HTML and accessible links/buttons
+- Server components for data fetching, `generateMetadata` for SEO
+
+## Deployment
+
+Any platform supporting Next.js 16 (Vercel, Netlify, Docker, etc.). Ensure:
+- `NEXT_PUBLIC_WP_GRAPHQL_URL` is set
+- `next.config.ts` `images.remotePatterns` includes your public WordPress host
 
 ## License
 
-This project is open source and available for use.
+MIT – use freely. Contributions welcome.

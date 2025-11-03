@@ -10,6 +10,7 @@ async function getPost(slug: string): Promise<Post | null> {
     const data = await graphqlClient.request<{ postBy: Post }>(GET_POST_BY_SLUG, {
       slug,
     });
+    console.log("[Blog] getPost data:", data.postBy);
     return data.postBy || null;
   } catch (error) {
     console.error('Error fetching post:', error);
@@ -25,6 +26,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = await getPost(slug);
 
+  console.log("[Blog] Page render for slug:", slug);
+  console.log("[Blog] Post details:", post);
+
   if (!post) {
     notFound();
   }
@@ -37,7 +41,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-blue-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
+    <div className="min-h-screen bg-white dark:bg-black">
       <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
         {/* Header */}
         <header className="mb-8">
@@ -47,7 +51,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <Link
                   key={category.id}
                   href={`/blog/category/${category.slug}`}
-                  className="rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50"
+                  className="rounded-full bg-orange-100 px-4 py-2 text-sm font-medium text-orange-700 transition-colors hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:hover:bg-orange-900/50"
                 >
                   {category.name}
                 </Link>
@@ -77,6 +81,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               src={imageUrl}
               alt={post.featuredImage?.node?.altText || post.title}
               fill
+              unoptimized
               className="object-cover"
               priority
               sizes="(max-width: 768px) 100vw, 896px"
@@ -86,10 +91,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Content */}
         {post.content && (
-          <div
-            className="prose prose-lg max-w-none rounded-2xl bg-white p-8 shadow-lg dark:prose-invert dark:bg-zinc-900"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <div className="rounded-2xl bg-white p-8 shadow-lg dark:bg-black">
+            <div
+              className="wp-content prose prose-lg max-w-none dark:prose-invert"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+          </div>
         )}
 
         {/* Tags */}
@@ -99,7 +106,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <Link
                 key={tag.id}
                 href={`/blog/tag/${tag.slug}`}
-                className="rounded-full bg-zinc-100 px-4 py-2 text-sm text-zinc-600 transition-colors hover:bg-blue-100 hover:text-blue-600 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
+                className="rounded-full bg-zinc-100 px-4 py-2 text-sm text-zinc-600 transition-colors hover:bg-orange-100 hover:text-orange-600 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-orange-900/30 dark:hover:text-orange-400"
               >
                 #{tag.name}
               </Link>
@@ -121,9 +128,20 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
+  const seo = post.seo;
+  const description = seo?.description || post.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
+  const ogImage = seo?.openGraph?.image?.secureUrl || post.featuredImage?.node?.sourceUrl;
+
   return {
-    title: `${post.title} | WordCamp Headless`,
-    description: post.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '',
-  };
+    title: seo?.title || `${post.title} | WordCamp Headless`,
+    description,
+    alternates: seo?.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
+    openGraph: {
+      title: seo?.openGraph?.title || seo?.title || post.title,
+      description: seo?.openGraph?.description || description,
+      images: ogImage ? [{ url: ogImage }] : undefined,
+    },
+    robots: undefined,
+  } as any;
 }
 

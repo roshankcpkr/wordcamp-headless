@@ -18,7 +18,7 @@ export default function BikeCard({ bike }: BikeCardProps) {
 
   return (
     <Link href={`/bikes/${bike.slug}`}>
-      <div className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-zinc-900">
+      <div className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 dark:bg-black">
         {/* Image Container */}
         <div className="relative h-64 w-full overflow-hidden bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900">
           {imageUrl && imageUrl !== '/placeholder-bike.jpg' && (
@@ -37,7 +37,7 @@ export default function BikeCard({ bike }: BikeCardProps) {
             </div>
           ) : null}
           {price !== undefined && price !== null && (
-            <div className="absolute right-4 top-4 rounded-full bg-white/90 px-4 py-2 text-sm font-bold text-green-600 shadow-lg backdrop-blur-sm dark:bg-zinc-900/90 dark:text-green-400">
+            <div className="absolute right-4 top-4 rounded-full bg-white/90 px-4 py-2 text-sm font-bold text-orange-600 shadow-lg backdrop-blur-sm dark:bg-zinc-900/90 dark:text-orange-400">
               {`Rs. ${Number(price).toLocaleString('en-IN')}`}
             </div>
           )}
@@ -45,7 +45,7 @@ export default function BikeCard({ bike }: BikeCardProps) {
 
         {/* Content */}
         <div className="p-6">
-          <h3 className="mb-2 text-xl font-bold text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
+          <h3 className="mb-2 text-xl font-bold text-zinc-900 transition-colors group-hover:text-orange-600 dark:text-zinc-100 dark:group-hover:text-orange-400">
             {bike.title}
           </h3>
           
@@ -77,7 +77,7 @@ export default function BikeCard({ bike }: BikeCardProps) {
             />
           )}
 
-          <div className="mt-4 flex items-center text-sm font-medium text-blue-600 dark:text-blue-400">
+          <div className="mt-4 flex items-center text-sm font-medium text-orange-600 dark:text-orange-400">
             View Details
             <svg
               className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"

@@ -36,7 +36,7 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
   const mileage = bike.bikes?.mileage;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-blue-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
+    <div className="min-h-screen bg-white dark:bg-black">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Image Section */}
@@ -67,7 +67,7 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
                 {bike.title}
               </h1>
               {price !== undefined && price !== null && (
-                <div className="mb-6 inline-block rounded-full bg-green-500 px-6 py-3 text-2xl font-bold text-white shadow-lg">
+                <div className="mb-6 inline-block rounded-full bg-orange-600 px-6 py-3 text-2xl font-bold text-white shadow-lg">
                   {`Rs. ${Number(price).toLocaleString('en-IN')}`}
                 </div>
               )}
@@ -107,10 +107,12 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
             </div>
 
             {bike.content && (
-              <div
-                className="prose prose-lg max-w-none rounded-2xl bg-white p-6 shadow-lg dark:prose-invert dark:bg-zinc-900"
-                dangerouslySetInnerHTML={{ __html: bike.content }}
-              />
+              <div className="rounded-2xl bg-white p-6 shadow-lg dark:bg-black">
+                <div
+                  className="wp-content prose prose-lg max-w-none dark:prose-invert"
+                  dangerouslySetInnerHTML={{ __html: bike.content }}
+                />
+              </div>
             )}
 
             {bike.terms && bike.terms.nodes && bike.terms.nodes.length > 0 && (
@@ -118,7 +120,7 @@ export default async function BikeDetailPage({ params }: BikeDetailPageProps) {
                 {bike.terms.nodes.map((taxonomy, index) => (
                   <span
                     key={index}
-                    className="rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                    className="rounded-full bg-orange-100 px-4 py-2 text-sm font-medium text-orange-700 dark:bg-orange-900/30 dark:text-orange-300"
                   >
                     {taxonomy.name}
                   </span>
@@ -142,9 +144,19 @@ export async function generateMetadata({ params }: BikeDetailPageProps) {
     };
   }
 
+  const seo = bike.seo;
+  const ogImage = seo?.openGraph?.image?.secureUrl || bike.featuredImage?.node?.sourceUrl;
+
   return {
-    title: `${bike.title} | WordCamp Headless`,
-    description: `Details about ${bike.title} - Model: ${bike.bikes?.model}, Price: $${bike.bikes?.price}`,
-  };
+    title: seo?.title || `${bike.title} | WordCamp Headless`,
+    description: seo?.description || `Details about ${bike.title} - Model: ${bike.bikes?.model}, Price: Rs. ${bike.bikes?.price}`,
+    alternates: seo?.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
+    openGraph: {
+      title: seo?.openGraph?.title || seo?.title || bike.title,
+      description: seo?.openGraph?.description || seo?.description,
+      images: ogImage ? [{ url: ogImage }] : undefined,
+    },
+    robots: undefined,
+  } as any;
 }
 

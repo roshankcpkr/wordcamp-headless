@@ -31,6 +31,7 @@ export interface Bike {
   title: string;
   slug: string;
   content?: string;
+  seo?: Seo;
   featuredImage?: FeaturedImage;
   terms?: {
     nodes: BikeTaxonomy[];
@@ -71,6 +72,7 @@ export interface Post {
   content?: string;
   date: string;
   modified?: string;
+  seo?: Seo;
   featuredImage?: FeaturedImage;
   categories?: {
     nodes: Category[];
@@ -84,5 +86,24 @@ export interface Post {
 export interface PageInfo {
   hasNextPage: boolean;
   endCursor?: string;
+}
+
+// SEO Types (WPGraphQL SEO / Yoast)
+export interface OpenGraphImageSeo {
+  secureUrl?: string;
+}
+
+export interface OpenGraphSeo {
+  title?: string;
+  description?: string;
+  image?: OpenGraphImageSeo;
+}
+
+export interface Seo {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  robots?: string;
+  openGraph?: OpenGraphSeo;
 }
 

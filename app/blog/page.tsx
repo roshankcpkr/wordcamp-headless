@@ -49,7 +49,7 @@ export default async function BlogPage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-blue-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
+    <div className="min-h-screen bg-white dark:bg-black">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -66,7 +66,7 @@ export default async function BlogPage() {
           <aside className="lg:col-span-1">
             {/* Categories */}
             {categories.length > 0 && (
-              <div className="mb-8 rounded-2xl bg-white p-6 shadow-lg dark:bg-zinc-900">
+              <div className="mb-8 rounded-2xl bg-white p-6 shadow-lg dark:bg-black">
                 <h2 className="mb-4 text-xl font-bold text-zinc-900 dark:text-zinc-100">
                   Categories
                 </h2>
@@ -75,7 +75,7 @@ export default async function BlogPage() {
                     <li key={category.id}>
                       <Link
                         href={`/blog/category/${category.slug}`}
-                        className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+                        className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-orange-600 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-orange-400"
                       >
                         <span>{category.name}</span>
                         {category.count !== undefined && (
@@ -92,7 +92,7 @@ export default async function BlogPage() {
 
             {/* Tags */}
             {tags.length > 0 && (
-              <div className="rounded-2xl bg-white p-6 shadow-lg dark:bg-zinc-900">
+              <div className="rounded-2xl bg-white p-6 shadow-lg dark:bg-black">
                 <h2 className="mb-4 text-xl font-bold text-zinc-900 dark:text-zinc-100">
                   Tags
                 </h2>
@@ -101,7 +101,7 @@ export default async function BlogPage() {
                     <Link
                       key={tag.id}
                       href={`/blog/tag/${tag.slug}`}
-                      className="rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-600 transition-colors hover:bg-blue-100 hover:text-blue-600 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-blue-900/30 dark:hover:text-blue-400"
+                      className="rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-600 transition-colors hover:bg-orange-100 hover:text-orange-600 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-orange-900/30 dark:hover:text-orange-400"
                     >
                       #{tag.name}
                       {tag.count !== undefined && ` (${tag.count})`}
