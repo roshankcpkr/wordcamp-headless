@@ -43,19 +43,6 @@ export const GET_BIKE_BY_SLUG = `
       title
       slug
       content
-      seo {
-        title
-        description
-        canonicalUrl
-        robots
-        openGraph {
-          title
-          description
-          image {
-            secureUrl
-          }
-        }
-      }
       featuredImage {
         node {
           sourceUrl
@@ -172,19 +159,6 @@ export const GET_POST_BY_SLUG = `
       content
       date
       modified
-      seo {
-        title
-        description
-        canonicalUrl
-        robots
-        openGraph {
-          title
-          description
-          image {
-            secureUrl
-          }
-        }
-      }
       featuredImage {
         node {
           sourceUrl

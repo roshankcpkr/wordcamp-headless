@@ -144,19 +144,11 @@ export async function generateMetadata({ params }: BikeDetailPageProps) {
     };
   }
 
-  const seo = bike.seo;
-  const ogImage = seo?.openGraph?.image?.secureUrl || bike.featuredImage?.node?.sourceUrl;
-
+  const ogImage = bike.featuredImage?.node?.sourceUrl;
   return {
-    title: seo?.title || `${bike.title} | WordCamp Headless`,
-    description: seo?.description || `Details about ${bike.title} - Model: ${bike.bikes?.model}, Price: Rs. ${bike.bikes?.price}`,
-    alternates: seo?.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
-    openGraph: {
-      title: seo?.openGraph?.title || seo?.title || bike.title,
-      description: seo?.openGraph?.description || seo?.description,
-      images: ogImage ? [{ url: ogImage }] : undefined,
-    },
-    robots: undefined,
-  } as any;
+    title: `${bike.title} | WordCamp Headless`,
+    description: `Details about ${bike.title} - Model: ${bike.bikes?.model}, Price: Rs. ${bike.bikes?.price}`,
+    openGraph: ogImage ? { images: [{ url: ogImage }] } : undefined,
+  };
 }
 

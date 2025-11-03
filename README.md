@@ -1,13 +1,14 @@
-# Step 5 – SEO (seo branch)
+# Step 4 – Theme & UX (theme branch)
 
-This branch adds SEO powered by WPGraphQL SEO (e.g., RankMath/Yoast) on top of bikes, blog and themed UI.
+This branch removes SEO and focuses on the visual polish and UX over the bikes and blog features.
 
 ## What’s in this step
 
-- WPGraphQL `seo` fields added to `lib/queries.ts`
-- Types for `Seo` and OpenGraph in `types/index.ts`
-- `generateMetadata` uses SEO for bikes/posts detail pages with fallbacks
-- Everything from previous steps (base → bikes → blog → theme)
+- Bikes + Blog (no SEO fields in queries)
+- Mobile navigation with hamburger
+- Footer with logo, about, socials
+- Card polish and black/white/orange theme
+- WordPress HTML rendering helpers in `.wp-content`
 
 ## Tech stack
 
@@ -25,7 +26,7 @@ This branch adds SEO powered by WPGraphQL SEO (e.g., RankMath/Yoast) on top of b
   - Custom Post Type: `bikes`
   - (Optional) Custom Taxonomy for bikes (e.g., `BRAND`), used as terms
   - Custom fields for bikes (ACF or code)
-  - SEO plugin exposing `seo` via WPGraphQL (RankMath or similar)
+  - (Optional) SEO plugin — not used in this branch
 
 ### Bike custom fields expected
 
@@ -82,7 +83,7 @@ npm start
 - Mobile-friendly navigation with hamburger menu
 - Footer with logo, about, and social links
 - Theme: Black/White + Orange accents
-- SEO from WordPress: `seo { title, description, canonicalUrl, openGraph { ... } }` used in `generateMetadata`
+- No SEO in this branch; metadata uses simple fallbacks
 
 ## Environment variables
 
@@ -96,10 +97,10 @@ npm start
 app/
   bikes/
     page.tsx           # Bikes listing (cards)
-    [slug]/page.tsx    # Bike detail, SEO metadata
+    [slug]/page.tsx    # Bike detail
   blog/
     page.tsx           # Blog listing with categories/tags
-    [slug]/page.tsx    # Blog detail, SEO metadata
+    [slug]/page.tsx    # Blog detail
     category/[slug]/   # Category pages
     tag/[slug]/        # Tag pages
   layout.tsx           # Root layout (Navigation + Footer)
@@ -123,7 +124,7 @@ types/
 1) Ensure the CPT `bikes` and GraphQL single name `bike` are exposed to GraphQL.
 2) If using a taxonomy filter (e.g., `BRAND`), adjust the `terms` queries to your taxonomy name.
 3) If ACF fields are different, update the `bikes` field group in `lib/queries.ts` and `types/index.ts`.
-4) For SEO, confirm your SEO plugin exposes `seo` in WPGraphQL. If not available, the app falls back to reasonable defaults.
+4) SEO is not used in this branch.
 
 ## Content rendering (classic editor)
 
@@ -149,7 +150,7 @@ If a query field errors, copy the working query from your GraphQL IDE and update
 ## Accessibility & performance
 
 - Semantic HTML and accessible links/buttons
-- Server components for data fetching, `generateMetadata` for SEO
+- Server components for data fetching
 
 ## Deployment
 

@@ -128,20 +128,12 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
-  const seo = post.seo;
-  const description = seo?.description || post.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
-  const ogImage = seo?.openGraph?.image?.secureUrl || post.featuredImage?.node?.sourceUrl;
-
+  const description = post.excerpt?.replace(/<[^>]*>/g, '').substring(0, 160) || '';
+  const ogImage = post.featuredImage?.node?.sourceUrl;
   return {
-    title: seo?.title || `${post.title} | WordCamp Headless`,
+    title: `${post.title} | WordCamp Headless`,
     description,
-    alternates: seo?.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
-    openGraph: {
-      title: seo?.openGraph?.title || seo?.title || post.title,
-      description: seo?.openGraph?.description || description,
-      images: ogImage ? [{ url: ogImage }] : undefined,
-    },
-    robots: undefined,
-  } as any;
+    openGraph: ogImage ? { images: [{ url: ogImage }] } : undefined,
+  };
 }
 
