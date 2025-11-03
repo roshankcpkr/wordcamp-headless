@@ -1,6 +1,13 @@
-# WordCamp Headless – Bike Info Site
+# Step 5 – SEO (seo branch)
 
-A Next.js App Router project using Headless WordPress (WPGraphQL) to power a Bike catalogue and a Blog. The UI follows a black/white base with orange accents and includes SEO, responsive cards, and WordPress classic editor HTML rendering.
+This branch adds SEO powered by WPGraphQL SEO (e.g., RankMath/Yoast) on top of bikes, blog and themed UI.
+
+## What’s in this step
+
+- WPGraphQL `seo` fields added to `lib/queries.ts`
+- Types for `Seo` and OpenGraph in `types/index.ts`
+- `generateMetadata` uses SEO for bikes/posts detail pages with fallbacks
+- Everything from previous steps (base → bikes → blog → theme)
 
 ## Tech stack
 
@@ -18,7 +25,7 @@ A Next.js App Router project using Headless WordPress (WPGraphQL) to power a Bik
   - Custom Post Type: `bikes`
   - (Optional) Custom Taxonomy for bikes (e.g., `BRAND`), used as terms
   - Custom fields for bikes (ACF or code)
-  - Optional SEO plugin exposing `seo` via WPGraphQL (Rankmath or similar)
+  - SEO plugin exposing `seo` via WPGraphQL (RankMath or similar)
 
 ### Bike custom fields expected
 
