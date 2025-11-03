@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ["localhost"],
+    // Allow WordPress media from local devx
+  },
 };
 
 export default nextConfig;
